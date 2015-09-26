@@ -1,0 +1,52 @@
+{
+  "name": "falling-pandas",
+  "version": "0.0.1",
+  "description": "A game for 2-5 people",
+  "main": "bin/index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/claydiffrient/falling-pandas.git"
+  },
+  "keywords": [
+    "pandas",
+    "falling"
+  ],
+  "author": "Clay Diffrient <clay.diffrient@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/claydiffrient/falling-pandas/issues"
+  },
+  "homepage": "https://github.com/claydiffrient/falling-pandas#readme",
+  "dependencies": {
+    "babel-core": "^5.8.25",
+    "babel-runtime": "^5.8.25",
+    "body-parser": "^1.14.0",
+    "compression": "^1.5.2",
+    "config": "^1.16.0",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.0",
+    "debug": "^2.2.0",
+    "express-session": "^1.11.3",
+    "lodash": "^3.10.1",
+    "method-override": "^2.3.5",
+    "morgan": "^1.6.1",
+    "rethinkdb": "^2.1.1",
+    "thinky": "^2.1.8"
+  },
+  "devDependencies": {
+    "babel-loader": "^5.3.2",
+    "chai": "^3.3.0",
+    "gulp": "^3.9.0",
+    "gulp-apidoc": "^0.1.5",
+    "gulp-babel": "^5.2.1",
+    "gulp-live-server": "0.0.28",
+    "gulp-mocha": "^2.1.3",
+    "gulp-semistandard": "^0.1.2",
+    "gulp-sourcemaps": "^1.5.2",
+    "mocha": "^2.3.3",
+    "webpack": "^1.12.2"
+  }
+}
