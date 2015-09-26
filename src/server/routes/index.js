@@ -15,24 +15,34 @@ let { r, type } = myThinky;
 // Game model
 let Game = myThinky.createModel('Game', {
   id: type.string(),
-  numPlayers: type.number(),
-  status: type.string().enum(['accepting', 'active', 'complete']),
+  numPlayers: type.number().default(0),
+  status: type.string().enum(['accepting', 'active', 'complete']).default('accepting'),
   date: type.date().default(r.now())
 });
 
 let api = {};
+
 api.listGames = (req, res) => {
   Game.run().then((game) => {
     res.json(game);
-  })
-}
+  });
+};
+
+api.createGame = (req, res) => {
+  let game = new Game(req.body);
+
+  game.save().then((result) => {
+    res.json(result);
+  });
+};
+
 
 
 
 // Game Routes
 router.get('/api/games', api.listGames);
 // router.get('/api/games/:id', api.listGame);
-// router.post('/api/games', api.createGame);
+router.post('/api/games', api.createGame);
 // router.put('/api/games/:id', api.updateGame);
 // router.delete('/api/games/:id', api.deleteGame);
 
