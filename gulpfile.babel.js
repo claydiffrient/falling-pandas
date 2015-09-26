@@ -21,6 +21,11 @@ gulp.task('babel:server', () => {
              .pipe(gulp.dest('compiled/server'));
 });
 
+gulp.task('copy:server:views', () => {
+  return gulp.src('src/server/views/**/*.handlebars')
+             .pipe(gulp.dest('compiled/server/views'));
+});
+
 gulp.task('lint', () => {
   return gulp.src(['src/**/*.js', 'gulpfile.js'])
              .pipe(semistandard())
@@ -59,7 +64,7 @@ gulp.task('docs:api', () => {
   });
 });
 
-gulp.task('build', ['babel:server']);
+gulp.task('build', ['babel:server', 'copy:server:views']);
 
 gulp.task('serve', ['build'], () => {
   server.start();
