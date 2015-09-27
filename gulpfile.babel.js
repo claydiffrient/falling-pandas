@@ -59,7 +59,7 @@ gulp.task('watch:server', () => {
 
 gulp.task('docs:api', () => {
   return apidoc.exec({
-    src: 'src/server/routes/api',
+    src: 'src/server/routes',
     dest: 'docs/api'
   });
 });

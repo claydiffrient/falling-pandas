@@ -1,0 +1,8 @@
+{
+  "Db": {
+    "host": "localhost",
+    "port": 28015,
+    "db": "pandas",
+    "expressPort": 4000
+  }
+}
