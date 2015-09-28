@@ -32,6 +32,16 @@ export let listGames = (req, res) => {
   });
 };
 
+export let startGame = (req, res) => {
+  Game.get(req.params.gameId).run().then((game) => {
+    game.status = 'active';
+
+    game.save().then((game) => {
+      res.json(game);
+    });
+  });
+};
+
 /**
  * @api {post} /games/:id/players Create a new game
  * @apiName CreatePlayer
@@ -56,8 +66,10 @@ export let createPlayer = (req, res) => {
   });
 };
 
+
 export default {
   listGames,
   createGame,
+  startGame,
   createPlayer
 };

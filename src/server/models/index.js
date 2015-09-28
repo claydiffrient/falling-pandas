@@ -10,7 +10,7 @@ export let Game = thinky.createModel('Game', {
   id: type.string(),
   numPlayers: type.number().default(0),
   status: type.string().enum(['accepting', 'active', 'complete']).default('accepting'),
-  date: type.date().default(r.now())
+  date: type.date().default(r.now()),
 });
 
 // Player model
@@ -18,6 +18,24 @@ export let Player = thinky.createModel('Player', {
   id: type.string(),
   name: type.string().required(),
   gameId: type.string().required()
+});
+
+const CARD_ACTIONS = [
+    'shuffle',
+    'future',
+    'skip',
+    'attack',
+    'favor',
+    'nope',
+    'defuse',
+    'explode'
+  ];
+
+// Card model
+export let Card = thinky.createModel('Card', {
+  id: type.string(),
+  name: type.string().required(),
+  action: type.string().enum(CARD_ACTIONS)
 });
 
 /**
@@ -28,3 +46,5 @@ export let Player = thinky.createModel('Player', {
 Game.hasMany(Player, 'players', 'id', 'gameId');
 Player.belongsTo(Game, 'game', 'gameId', 'id');
 
+// A Game has many cards (via deck game attribute)
+// Game.hasMany(Card, 'deck', )
