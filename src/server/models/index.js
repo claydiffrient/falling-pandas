@@ -10,7 +10,7 @@ export let Game = thinky.createModel('Game', {
   id: type.string(),
   numPlayers: type.number().default(0),
   status: type.string().enum(['accepting', 'active', 'complete']).default('accepting'),
-  date: type.date().default(r.now()),
+  date: type.date().default(r.now())
 });
 
 // Player model
@@ -38,6 +38,18 @@ export let Card = thinky.createModel('Card', {
   action: type.string().enum(CARD_ACTIONS)
 });
 
+// Deck model
+export let Deck = thinky.createModel('Deck', {
+  id: type.string(),
+  gameId: type.string().required()
+});
+
+// Hand model
+export let Hand = thinky.createModel('Hand', {
+  id: type.string(),
+  playerId: type.string().required()
+});
+
 /**
  * Associations
  */
@@ -46,5 +58,18 @@ export let Card = thinky.createModel('Card', {
 Game.hasMany(Player, 'players', 'id', 'gameId');
 Player.belongsTo(Game, 'game', 'gameId', 'id');
 
-// A Game has many cards (via deck game attribute)
-// Game.hasMany(Card, 'deck', )
+// Game has one deck
+Game.hasOne(Deck, 'deck', 'id', 'gameId');
+Deck.belongsTo(Game, 'game', 'gameId', 'id');
+
+// A Deck has many cards
+Deck.hasMany(Card, 'cards', 'id', 'cardId');
+Card.belongsTo(Deck, 'deck', 'cardId', 'id');
+
+// A player has a hand
+Player.hasOne(Hand, 'hand', 'id', 'playerId');
+Hand.belongsTo(Player, 'player', 'playerId', 'id');
+
+// A Hand has many cards
+Hand.hasMany(Card, 'cards', 'id', 'cardId');
+Card.belongsTo(Hand, 'hand', 'cardId', 'id');

@@ -1,4 +1,4 @@
-import { Game, Player } from '../models';
+import { Game, Player, Deck, Card, Hand } from '../models';
 
 /**
  * @api {post} /games Create a new game
@@ -14,6 +14,9 @@ import { Game, Player } from '../models';
  */
 export let createGame = (req, res) => {
   let game = new Game({});
+  let deck = new Deck({});
+
+  game.deck = deck;
 
   game.save().then((result) => {
     res.json(result);
@@ -32,14 +35,29 @@ export let listGames = (req, res) => {
   });
 };
 
-export let startGame = (req, res) => {
-  Game.get(req.params.gameId).run().then((game) => {
-    game.status = 'active';
+let _generateCards = () => {
+  let cards = [];
+  cards.push(new Card({
+    name: 'Favor',
+    type: 'favor'
+  }));
 
-    game.save().then((game) => {
-      res.json(game);
-    });
-  });
+  return cards;
+};
+
+export let startGame = (req, res) => {
+  Game.get(req.params.gameId)
+      .getJoin()
+      .run().
+      then((game) => {
+        game.status = 'active';
+        game.deck = game.deck || new Deck({});
+        game.deck.cards = _generateCards();
+
+        game.save().then((game) => {
+          res.json(game);
+        });
+      });
 };
 
 /**
