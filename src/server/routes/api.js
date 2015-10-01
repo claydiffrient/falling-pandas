@@ -37,10 +37,18 @@ export let listGames = (req, res) => {
 
 let _generateCards = () => {
   let cards = [];
-  cards.push(new Card({
-    name: 'Favor',
-    type: 'favor'
-  }));
+  // 5 favors
+  for (let i = 0; i < 5; i++) {
+    Card.get('favor').run().then((card) => {
+      cards.push(card);
+    });
+  }
+  // 5 attacks
+  for (let i = 0; i < 5; i++) {
+    Card.get('attack').run().then((card) => {
+      cards.push(card);
+    });
+  }
 
   return cards;
 };
