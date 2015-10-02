@@ -35,17 +35,46 @@ export let listGames = (req, res) => {
   });
 };
 
-let _generateCards = () => {
+let _generateCards = (numPlayers) => {
   let cards = [];
-  // 5 favors
+
   for (let i = 0; i < 5; i++) {
-    Card.get('favor').run().then((card) => {
+    // 5 favors
+    Card.filter({action: 'favor'}).slice(0, 1).run().then((card) => {
+      cards.push(card);
+    });
+    // 5 attacks
+    Card.filter({action: 'attack'}).slice(0, 1).run().then((card) => {
+      cards.push(card);
+    });
+    // 5 nopes
+    Card.filter({action: 'nope'}).slice(0, 1).run().then((card) => {
+      cards.push(card);
+    });
+    // 5 shuffles
+    Card.filter({action: 'shuffle'}).slice(0, 1).run().then((card) => {
+      cards.push(card);
+    });
+    // 5 skips
+    Card.filter({action: 'skip'}).slice(0, 1).run().then((card) => {
+      cards.push(card);
+    });
+    // 5 futures
+    Card.filter({action: 'future'}).slice(0, 1).run().then((card) => {
       cards.push(card);
     });
   }
-  // 5 attacks
-  for (let i = 0; i < 5; i++) {
-    Card.get('attack').run().then((card) => {
+
+  // 1 less than the numPlayers for the number of explodes
+  for (let i = 0; i < numPlayers - 1; i++) {
+    Card.filter({action: 'explode'}).slice(0,1).run().then((card) => {
+      cards.push(card);
+    });
+  }
+
+  // 5 - numPlayers for the number of defuses in the deck
+  for (let i = 0; i < 5 - numPlayers; i++) {
+    Card.filter({action: 'defuse'}).slice(0,1).run().then((card) => {
       cards.push(card);
     });
   }
@@ -56,11 +85,14 @@ let _generateCards = () => {
 export let startGame = (req, res) => {
   Game.get(req.params.gameId)
       .getJoin()
-      .run().
-      then((game) => {
+      .run()
+      .then((game) => {
+        if (game.numPlayers < 2) {
+          return res.json({error: 'You need at least 2 players.'});
+        }
         game.status = 'active';
         game.deck = game.deck || new Deck({});
-        game.deck.cards = _generateCards();
+        game.deck.cards = _generateCards(game.numPlayers);
 
         game.save().then((game) => {
           res.json(game);
