@@ -8,7 +8,14 @@ let { r, type } = thinky;
 // Game model
 export let Game = thinky.createModel('Game', {
   id: type.string(),
-  numPlayers: type.number().default(0),
+  numPlayers: type.virtual().default(function () {
+    if (this.players) {
+      return this.players.length;
+    } else {
+      return 0;
+    }
+
+  }),
   status: type.string().enum(['accepting', 'active', 'complete']).default('accepting'),
   date: type.date().default(r.now())
 });
