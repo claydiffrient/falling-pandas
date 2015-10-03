@@ -43,8 +43,6 @@ export let Card = thinky.createModel('Card', {
   id: type.string(),
   name: type.string().required(),
   action: type.string().enum(CARD_ACTIONS)
-}, {
-  pk: 'action' // Might as well have only one entry for each type of card
 });
 
 // Deck model

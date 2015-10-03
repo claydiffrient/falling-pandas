@@ -34,7 +34,7 @@ export let createGame = (req, res) => {
  * @apiVersion 1.0.0
  */
 export let listGames = (req, res) => {
-  Game.getJoin({players: true, deck:true}).then((game) => {
+  Game.getJoin({players: true, deck:{cards:true}}).then((game) => {
     res.json(game);
   });
 };
@@ -83,19 +83,21 @@ let _generateCards = (numPlayers) => {
     });
   }
 
+  console.log(cards);
+
   return cards;
 };
 
 export let startGame = (req, res) => {
   Game.get(req.params.gameId)
-      .getJoin()
+      .getJoin({players: true, deck: true})
       .run()
       .then((game) => {
+        console.log(game);
         if (game.numPlayers < 2) {
           return res.json({error: 'You need at least 2 players.'});
         }
         game.status = 'active';
-        game.deck = game.deck || new Deck({gameId: req.params.gameId});
         game.deck.cards = _generateCards(game.numPlayers);
 
         game.save().then((game) => {
